@@ -32,6 +32,12 @@ public class IU{
         // para avisar según la interacción del usuario
         miControlador = new Controller();
         // añadimos listener al boton
+
+
+        /**
+         * Configuramos el botón para crear el coche
+         * @param new ActionListener
+         */
         crearCoche.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,6 +47,10 @@ public class IU{
 
             }
         });
+        /**
+         * Configuramos el botón para bajar la velocidad
+         * @param new ActionListener
+         */
         bajarVelocidadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,12 +58,20 @@ public class IU{
 
             }
         });
+        /**
+         * Configuramos el botón para subir la velocidad
+         * @param new ActionListener
+         */
         subirVelocidadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 miControlador.aumentarVelocidad(matricula.getText());
             }
         });
+        /**
+         * Configuramos el botón para enseár los datos del coche
+         * @param new ActionListener
+         */
 
         mostrarDatosButton.addActionListener(new ActionListener() {
             @Override
