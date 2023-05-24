@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Observable;
 
 public class Model {
     static ArrayList<Coche> parking = new ArrayList<>();
@@ -9,7 +10,7 @@ public class Model {
      * @param matricula identificador unico
      * @return el coche creado
      */
-    public Coche crearCoche(String modelo, String matricula){
+    public static Coche crearCoche(String modelo, String matricula){
         Coche aux = new Coche(modelo, matricula);
         parking.add(aux);
         return aux;
@@ -20,7 +21,7 @@ public class Model {
      * @param matricula a buscar
      * @return chche o null si no existe
      */
-    public Coche getCoche(String matricula){
+    public static Coche getCoche(String matricula){
         Coche aux = null;
         // recorre el array buscando por matricula
         for (Coche e: parking) {
@@ -50,33 +51,27 @@ public class Model {
      * @param v   velocidad para acelerar
      * @return velocidad aumentada
      */
-   public Integer subirVelocidad(String matricula, Integer v){
-       // busca el coche
-       getCoche(matricula).velocidad+=v;
-       // retorna la nueva velocidad
-       return getCoche(matricula).velocidad;
-   }
+    public Integer subirVelocidad(String matricula) {
+        // busca el coche y sube la velocidad
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad + 10;
+        // retorna la nueva velocidad
+        return getCoche(matricula).velocidad;
+    }
 
     /**
      * Disminuye la velocidad de un coche
      *
      * @param matricula del coche
-     * @param v         velocidad para disminuir
      * @return velocidad disminuida
      */
-    public Integer bajarVelocidad(String matricula, Integer v) {
-        // busca el coche
-        if (getCoche(matricula).velocidad - v > 0) {
-            getCoche(matricula).velocidad = 0;
-
-        }
+    public Integer bajarVelocidad(String matricula) {
+        // busca el coche y sube la velocidad
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad - 10;
         // retorna la nueva velocidad
-        else {
-            getCoche(matricula).velocidad -= v;
-
-        }
         return getCoche(matricula).velocidad;
     }
+        // retorna la nueva velocidad
+
 
 
 
