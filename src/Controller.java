@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Controller {
     static Model miModelo = new Model();
     static View miVista = new View();
@@ -9,18 +11,21 @@ public class Controller {
     public static void crearCoche(String modelo, String matricula){
         Coche aux = miModelo.crearCoche(modelo,matricula);
         if(aux!=null){
-            miVista.muestraVelocidad(aux.matricula, aux.velocidad);
+            JOptionPane.showMessageDialog(null,"Coche Creado");
         }
     }
 
     public static void bajarVelocidad(String matricula){
-        int aux = miModelo.bajarVelocidad(matricula);
-        miVista.muestraVelocidad(matricula, aux);
+       miModelo.bajarVelocidad(matricula);
+        miVista.mostrarDatos(matricula);
     }
 
     public static void aumentarVelocidad(String matricula){
-        int aux = miModelo.subirVelocidad(matricula);
-        miVista.muestraVelocidad(matricula,aux);
+         miModelo.subirVelocidad(matricula);
+        miVista.mostrarDatos(matricula);
+    }
+    public static void enseñarDatos(String matricula){
+        miVista.mostrarDatos(matricula);
     }
 }
 
