@@ -1,6 +1,14 @@
 # Arquitectura MVC
 
-Aplicación que trabaja con objetos coches, modifica la velocidad y la muestra
+---
+## Cambios que he hecho:
+-Cambiamos el método de mostrar velocidad en el view
+por un método que gracias al getCoche de Modelo muestre todos
+los datos de este.
+-En el controller hacemos un método para mostrar los datos que lo único que 
+hace es llamar al método de View.
+-En la IU añadimos un text field para meter la matrícula del coche  y un 
+botón que a partir de esta llame al método de controller de mostrar los datos.
 
 ---
 ## Diagrama de clases:
@@ -14,13 +22,19 @@ classDiagram
     }
       class Controller{
           +main()
+          +crearCoche(String,String)
+         +aumentarVelocidad(String)
+         +bajarVelocidad(String)
+         
       }
-      class View {+muestraVelocidad(String, Integer)}
+      class View {+mostrarDatos(String)}
       class Model {
           ArrayList~Coche~: parking
-          +crearCoche(String, String, String)
+          +crearCoche(String, String)
           +getCoche(String)
           +cambiarVelocidad(String, Integer)
+          +subirVelocidad(String)
+          +bajarVelocidad(String)
           +getVelocidad(String)
       }
     Controller "1" *-- "1" Model : association
@@ -32,40 +46,24 @@ classDiagram
 ---
 
 ## Diagrama de Secuencia
-
-Ejemplo básico del procedimiento, sin utilizar los nombres de los métodos
-
-
 ```mermaid
 sequenceDiagram
-    participant Model
-    participant Controller
-    participant View
-    Controller->>Model: Puedes crear un coche?
-    activate Model
-    Model-->>Controller: Creado!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-```
+actor usuario
+participant IU
+        participant Dialog
+        participant View
 
-El mismo diagrama con los nombres de los métodos
-
-```mermaid
-sequenceDiagram
+participant Controller
     participant Model
-    participant Controller
-    participant View
-    Controller->>Model: crearCoche("Mercedes", "BXK 1234")
+    usuario->>IU: click! enseñarDatos
+    IU->>Controller: enseñarDatos()
+    activate Controller
+    Controller->>Model: getCoche
     activate Model
     Model-->>Controller: Coche
     deactivate Model
-    Controller->>+View: muestraVelocidad("BXK 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
+    Controller->>View: mostrarDatos
+    deactivate Controller
+    View-->>Dialog: mostrarDatos()
+
 ```

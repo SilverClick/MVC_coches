@@ -1,21 +1,53 @@
+import javax.swing.*;
+
 public class Controller {
+    static Model miModelo = new Model();
+    static View miVista = new View();
     public static void main(String[] args) {
-        Model miModelo = new Model();
-        View miVista = new View();
 
-        // Crear tres coches
 
-        miModelo.crearCoche("LaFerrari", "SBC 1234");
-        miModelo.crearCoche("Alpine", "HYU 4567");
-        miModelo.crearCoche("Aston Martin", "FGH 3333");
+            IU.crearVentana();
+        }
+    /**
+     * Crea un coche
+     * @param modelo    del coche
+     * @param matricula identificador unico
+     */
+    public static void crearCoche(String modelo, String matricula){
+        //creamos el coche y mostramos un mensaje conforme se ha creado
+        Coche aux = miModelo.crearCoche(modelo,matricula);
+        if(aux!=null){
+            JOptionPane.showMessageDialog(null,"Coche Creado");
+        }
+    }
+    /**
+     * Baja la velocidad del coche
+     * @param matricula identificador unico
+     */
 
-        Coche ferrari = miModelo.getCoche("SBC 1234");
-        // modifica la velocidad
-        miModelo.cambiarVelocidad("SBC 1234", 30);
+    public static void bajarVelocidad(String matricula){
+        // Bajamos la velocidad del coche.
+       miModelo.bajarVelocidad(matricula);
+        JOptionPane.showMessageDialog(null,"Velocidad cambiada");
+    }
+    /**
+     * Sube la velocidad del coche
+     * @param matricula identificador unico
+     */
 
-        // recoje la velocidad y la muestra (tarea de la View)
-        boolean hecho = miVista.muestraVelocidad("SBC 1234", miModelo.getVelocidad("SBC 1234"));
-
-        System.out.println(hecho);
+    public static void aumentarVelocidad(String matricula){
+        // Bajamos la velocidad del coche.
+         miModelo.subirVelocidad(matricula);
+        JOptionPane.showMessageDialog(null,"Velocidad cambiada");
+    }
+    /**
+     * Muestra los datos del coche
+     * @param matricula identificador unico
+     */
+    public static void enseñarDatos(String matricula){
+        // Enseñamos los datos del coche.
+        miVista.mostrarDatos(matricula);
     }
 }
+
+
