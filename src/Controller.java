@@ -1,21 +1,39 @@
 public class Controller {
+    static Model miModelo = new Model();
+    static View miVista = new View();
     public static void main(String[] args) {
-        Model miModelo = new Model();
-        View miVista = new View();
+        ObsExceso exceso = new ObsExceso();
+        miModelo.addObserver(exceso);
+        IU.crearVentana();
+    }
 
-        // Crear tres coches
+    /**
+     * Método para crear el coche.
+     * @param modelo
+     * @param matricula
+     */
+    public static void crearCoche(String modelo, String matricula){
+        Coche aux = miModelo.crearCoche(modelo,matricula);
+        if(aux!=null){
+            miVista.muestraVelocidad(aux.matricula, aux.velocidad);
+        }
+    }
 
-        miModelo.crearCoche("LaFerrari", "SBC 1234");
-        miModelo.crearCoche("Alpine", "HYU 4567");
-        miModelo.crearCoche("Aston Martin", "FGH 3333");
+    /**
+     * Método para bajar la velocidad del coche.
+     * @param matricula
+     */
+    public static void bajarVelocidad(String matricula){
+        miModelo.bajarVelocidad(matricula);
+    }
 
-        Coche ferrari = miModelo.getCoche("SBC 1234");
-        // modifica la velocidad
-        miModelo.cambiarVelocidad("SBC 1234", 30);
-
-        // recoje la velocidad y la muestra (tarea de la View)
-        boolean hecho = miVista.muestraVelocidad("SBC 1234", miModelo.getVelocidad("SBC 1234"));
-
-        System.out.println(hecho);
+    /**
+     * Método para bajar la velocidad del coche.
+     * @param matricula
+     */
+    public static void aumentarVelocidad(String matricula){
+        miModelo.subirVelocidad(matricula);
     }
 }
+
+

@@ -1,13 +1,21 @@
-# Arquitectura MVC
+# Arquitectura MVC con Observer
 
-Aplicación que trabaja con objetos coches, modifica la velocidad y la muestra
+## Cambios que he hecho:
+-Añadimos un nuevo método en la View que muestre un mensaje en el Dialog
+si nuestro coche se ha excedido de 120 km/hr.
+-Cambiamos la clase OVelocidad del Observer por una clase ObsExceso
+que hace lo mismo pero también llama al método nuevo de la View
+por si nos sobrepasamos de velocidad.
+-Cambiamos en el Controller el Observer que añade.
 
 ---
 ## Diagrama de clases:
 
 ```mermaid
 classDiagram
-    class Coche {
+    class Observable {
+        }
+        class Coche {
         String: matricula
         String: modelo
         Integer: velocidad
@@ -15,17 +23,21 @@ classDiagram
       class Controller{
           +main()
       }
-      class View {+muestraVelocidad(String, Integer)}
       class Model {
           ArrayList~Coche~: parking
           +crearCoche(String, String, String)
           +getCoche(String)
+          +subirVelocidad(String)
           +cambiarVelocidad(String, Integer)
           +getVelocidad(String)
       }
-    Controller "1" *-- "1" Model : association
-    Controller "1" *-- "1" View : association
+      class ObsExceso{
+          +update()
+          }
+          Controller "1" *-- "1" ObsExceso: association
+          Controller "1" *-- "1" Model : association
     Model "1" *-- "1..n" Coche : association
+    Observable <|-- Model
       
 ```
 
@@ -33,39 +45,31 @@ classDiagram
 
 ## Diagrama de Secuencia
 
-Ejemplo básico del procedimiento, sin utilizar los nombres de los métodos
-
-
 ```mermaid
-sequenceDiagram
-    participant Model
-    participant Controller
-    participant View
-    Controller->>Model: Puedes crear un coche?
-    activate Model
-    Model-->>Controller: Creado!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-```
 
-El mismo diagrama con los nombres de los métodos
 
-```mermaid
 sequenceDiagram
+actor usuario
+participant IU
+        participant Dialog
+        participant View
+
+participant Controller
     participant Model
-    participant Controller
-    participant View
-    Controller->>Model: crearCoche("Mercedes", "BXK 1234")
+    usuario->>IU: click! subirVelocidad
+    IU->>Controller: aumentarVelocidad()
+    activate Controller
+    Controller->>Model: subirVelocidad()
     activate Model
-    Model-->>Controller: Coche
+     Model->>ObsExceso: update()
     deactivate Model
-    Controller->>+View: muestraVelocidad("BXK 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
+     activate ObsExceso
+      ObsExceso->>+View: muestraExceso
+      ObsExceso->>+View: muestraVelocidad
+          deactivate ObsExceso
+          View-->>Dialog: muestraExceso()
+    View-->>Dialog: muestraVelocidad()
+     deactivate View
+
+
 ```

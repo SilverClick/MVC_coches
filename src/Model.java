@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Model {
+public class Model extends Observable {
     static ArrayList<Coche> parking = new ArrayList<>();
 
     /**
@@ -13,6 +14,21 @@ public class Model {
         Coche aux = new Coche(modelo, matricula);
         parking.add(aux);
         return aux;
+    }
+
+    /**
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y se lo notifica al observer
+     * @param matricula
+     * @param v nueva velocidad
+     */
+    public void cambiarVelocidad(String matricula, Integer v) {
+        // busca el coche
+        getCoche(matricula).velocidad = v;
+        //cambia
+        setChanged();
+        // notifica del cambio
+        notifyObservers(getCoche(matricula));
     }
 
     /**
@@ -32,20 +48,36 @@ public class Model {
     }
 
     /**
-     *
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y se lo notifica al observer
      * @param matricula
-     * @param v nueva velocidad
-     * @return velocidad modificada
      */
-    public Integer cambiarVelocidad(String matricula, Integer v) {
-        // busca el coche
-        getCoche(matricula).velocidad = v;
-        // retorna la nueva velocidad
-        return getCoche(matricula).velocidad;
+    public void subirVelocidad(String matricula) {
+        // busca el coche y sube la velocidad
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad + 10;
+        // cambia el parametro
+        setChanged();
+        //notifica al observer
+        notifyObservers(getCoche(matricula));
     }
 
     /**
-     * Ddevuelve la velocidad segun la matricula
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y se lo notifica al observer
+     * @param matricula
+     */
+    public void bajarVelocidad(String matricula) {
+        // busca el coche y sube la velocidad
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad - 10;
+        // se da cuenta de que cambió
+        setChanged();
+        //notifica al observer
+        notifyObservers(getCoche(matricula));
+
+    }
+
+    /**
+     * Devuelve la velocidad según la matricula
      * @param matricula
      * @return
      */
@@ -53,3 +85,4 @@ public class Model {
         return getCoche(matricula).velocidad;
     }
 }
+
