@@ -1,16 +1,12 @@
 # Arquitectura MVC con Observer
 
-En esta rama utilizaremos el patrón Observer
-
-Los cambios de la velocidad que se hagan en el model
-serán observados por el Controller
-
-Para notificar a los observadores hacemos dos pasos
-
-* Actualizamos el estado a 'algo a cambiado' con `setChanged()`
-* Notificamos a los observadores `notifyObservers(valor)`
-
-De esta manera se *dispara* en todos los observadores el método `update()`
+## Cambios que he hecho:
+-Añadimos un nuevo método en la View que muestre un mensaje en el Dialog
+si nuestro coche se ha excedido de 120 km/hr.
+-Cambiamos la clase OVelocidad del Observer por una clase ObsExceso
+que hace lo mismo pero también llama al método nuevo de la View
+por si nos sobrepasamos de velocidad.
+-Cambiamos en el Controller el Observer que añade.
 
 ---
 ## Diagrama de clases:
@@ -31,13 +27,14 @@ classDiagram
           ArrayList~Coche~: parking
           +crearCoche(String, String, String)
           +getCoche(String)
+          +subirVelocidad(String)
           +cambiarVelocidad(String, Integer)
           +getVelocidad(String)
       }
-      class ObserverVelocidad {
+      class ObsExceso{
           +update()
           }
-          Controller "1" *-- "1" ObserverVelocidad: association
+          Controller "1" *-- "1" ObsExceso: association
           Controller "1" *-- "1" Model : association
     Model "1" *-- "1..n" Coche : association
     Observable <|-- Model
@@ -48,38 +45,41 @@ classDiagram
 
 ## Diagrama de Secuencia
 
-Que ocurre cuando se cambia la velocidad
-
-
 ```mermaid
+
+
 sequenceDiagram
-    participant View
-    participant Controller
-    participant ObserverVelocidad
+actor usuario
+participant IU
+        participant Dialog
+        participant View
+
+participant Controller
     participant Model
-    
-    Controller->>Model: cambia la velociad, porfa
+    usuario->>IU: click! subirVelocidad
+    IU->>Controller: aumentarVelocidad()
+    activate Controller
+    Controller->>Model: subirVelocidad()
     activate Model
-    Model->>ObserverVelocidad: Notificacion de cambio de velocidad
+     Model->>ObsExceso: update()
     deactivate Model
-    activate ObserverVelocidad
-    ObserverVelocidad->>+View: Muestra la velocidad, porfa
-    deactivate ObserverVelocidad
-    activate View
-    View->>-View: Mostrando velocidad
-    deactivate View
+     activate ObsExceso
+      ObsExceso->>+View: muestraExceso
+      ObsExceso->>+View: muestraVelocidad
+          deactivate ObsExceso
+          View-->>Dialog: muestraExceso()
+    View-->>Dialog: muestraVelocidad()
+     deactivate View
+
+
 ```
-
-El mismo diagrama con los nombres de los métodos
-
 ```mermaid
 sequenceDiagram
-    participant View
-    box gray Controlador
-    participant Controller
-    participant ObserverVelocidad
-    end
-    participant Model
+participant View
+participant Controller
+participant ObserverVelocidad
+end
+participant Model
 
     Controller->>Model: cambiarVelocidad()
     activate Model
@@ -89,38 +89,6 @@ sequenceDiagram
     ObserverVelocidad->>+View: muestraVelocidad
     deactivate ObserverVelocidad
     activate View
-    View->>-View: sout
-    deactivate View
-```
-
-Si sumamos otro observador, entonces el `update()` será en paralelo (**par**)
-
-a todos los Observadores
-
-```mermaid
-sequenceDiagram
-    participant View
-    box gray Controlador
-    participant Controller
-    participant ObserverVelocidad
-    participant ObserverOtro
-    end
-    participant Model
-
-    Controller->>Model: cambiarVelocidad()
-    activate Model
-    par notificacion
-        Model->>ObserverVelocidad: update()
-    and notificacion
-        Model->>ObserverOtro: update()
-        end
-    deactivate Model
-    activate ObserverVelocidad
-    activate ObserverOtro
-    ObserverVelocidad->>+View: muestraVelocidad
-    deactivate ObserverVelocidad
-    ObserverOtro->>-ObserverOtro: sout
-    activate View
-    View->>-View: sout
+    View->>View: sout
     deactivate View
 ```

@@ -77,7 +77,7 @@ public class Model extends Observable {
     }
 
     /**
-     * Ddevuelve la velocidad segun la matricula
+     * Devuelve la velocidad según la matricula
      * @param matricula
      * @return
      */

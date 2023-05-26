@@ -8,6 +8,7 @@ public class Controller {
     }
 
     /**
+     * Método para crear el coche.
      * @param modelo
      * @param matricula
      */
@@ -19,6 +20,7 @@ public class Controller {
     }
 
     /**
+     * Método para bajar la velocidad del coche.
      * @param matricula
      */
     public static void bajarVelocidad(String matricula){
@@ -26,6 +28,7 @@ public class Controller {
     }
 
     /**
+     * Método para bajar la velocidad del coche.
      * @param matricula
      */
     public static void aumentarVelocidad(String matricula){
