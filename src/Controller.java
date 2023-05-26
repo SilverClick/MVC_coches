@@ -2,8 +2,8 @@ public class Controller {
     static Model miModelo = new Model();
     static View miVista = new View();
     public static void main(String[] args) {
-        OVelocidad oVelocidad = new OVelocidad();
-        miModelo.addObserver(oVelocidad);
+        ObsExceso exceso = new ObsExceso();
+        miModelo.addObserver(exceso);
         IU.crearVentana();
     }
 
