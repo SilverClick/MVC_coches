@@ -73,22 +73,3 @@ participant Controller
 
 
 ```
-```mermaid
-sequenceDiagram
-participant View
-participant Controller
-participant ObserverVelocidad
-end
-participant Model
-
-    Controller->>Model: cambiarVelocidad()
-    activate Model
-    Model->>ObserverVelocidad: update()
-    deactivate Model
-    activate ObserverVelocidad
-    ObserverVelocidad->>+View: muestraVelocidad
-    deactivate ObserverVelocidad
-    activate View
-    View->>View: sout
-    deactivate View
-```
